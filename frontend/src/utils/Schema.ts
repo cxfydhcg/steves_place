@@ -286,7 +286,7 @@ export interface SandwichSchema {
   size: SandwichSize;
   bread: SandwichBread;
   meat: SandwichMeat;
-  toast?: boolean;
+  toasted?: boolean;
   grilled?: boolean;
   cheese?: SandwichCheese;
   toppings?: SandwichToppings[];
@@ -316,7 +316,7 @@ export interface EggSandwichSchema {
   quantity: number; // ge=1
   bread: EggSandwichBread;
   egg: Egg;
-  toast?: boolean;
+  toasted?: boolean;
   grilled?: boolean;
   meat?: EggSandwichMeat;
   cheese?: EggSandwichCheese;

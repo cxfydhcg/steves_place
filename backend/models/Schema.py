@@ -7,7 +7,7 @@ structure for API requests and responses.
 """
 
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List, Optional, Literal
 from .Side import SideName, SideSize, Chips
 from .Drink import DrinkSize, FountainDrink, BottleDrink
 from .Hotdog import HotDogMeat, HotDogTopping
@@ -15,8 +15,10 @@ from .Salad import SaladChoice, SaladTopping, SaladDressing, SaladAddOns
 from .Sandwich import SandwichSize, SandwichBread, SandwichMeat, SandwichCheese, SandwichToppings, SandwichAddOns
 from .EggSandwich import Egg, EggSandwichBread, EggSandwichMeat, EggSandwichCheese, EggSandwichToppings, EggSandwichAddOns
 
-quantity_field = Field(ge=1)
-special_instructions_field = Field(default=None, max_length=200)
+quantity_field: int = Field(ge=1, description="Quantity must be at least 1")
+
+special_instructions_field: Optional[str] = Field(default=None, max_length=200, description="Special instructions for the order")
+
 
 class HotdogSchema(BaseModel):
     """
@@ -112,13 +114,13 @@ class SideSchema(BaseModel):
     Attributes:
         quantity (int): Number of side items ordered
         name (SideName): Name of the side item
-        size (Optional[SideSize]): Size of the side item
+        size (SideSize): Size of the side item
         chips_type (Optional[Chips]): Type of chips
         special_instructions (Optional[str]): Special preparation notes
     """
     quantity: int = quantity_field
     name: SideName
-    size: Optional[SideSize] = None
+    size: SideSize = SideSize.REGULAR
     chips_type: Optional[Chips] = None
     special_instructions: Optional[str] = special_instructions_field
 
@@ -147,13 +149,21 @@ class ComboSideSchema(BaseModel):
     Validates side item data structure for combo meals.
     
     Attributes:
+        quantity (int): is by default 1
         name (SideName): Name of the side item
-        size (Optional[SideSize]): Size of the side item
+        size (SideSize): is by default regular
         chips_type (Optional[Chips]): Type of chips
+        special_instructions (str): is by default to None
     """
+    quantity: Literal[1] = Field(default=1, description="Quantity should be at combo level")
     name: SideName
-    size: Optional[SideSize] = None
+    size: SideSize = SideSize.REGULAR
     chips_type: Optional[Chips] = None
+    special_instructions: Literal[None] = Field(default=None, description="Description should be at combo level")
+
+
+
+
 
 class ComboDrinkSchema(BaseModel):
     """
@@ -162,11 +172,19 @@ class ComboDrinkSchema(BaseModel):
     Validates drink data structure for combo meals.
     
     Attributes:
+        quantity (int): is by default 1
         name (FountainDrink | BottleDrink): Drink selection
-        size (Optional[DrinkSize]): Size of the drink
+        size (DrinkSize): Size of the drink
+        special_instructions (str): is by default to None
+
     """
+    quantity: Literal[1] = Field(default=1, description="Quantity should be at combo level")
+
     name: FountainDrink | BottleDrink
-    size: Optional[DrinkSize] = None
+    size: DrinkSize
+    special_instructions: Literal[None] = Field(default=None, description="Description should be at combo level")
+
+
 
 class ComboSchema(BaseModel):
     """
@@ -198,7 +216,7 @@ class EggSandwichSchema(BaseModel):
         quantity (int): Number of egg sandwiches ordered
         bread (EggSandwichBread): Bread type
         egg (Egg): Egg preparation style
-        toast (Optional[bool]): Whether to toast the bread
+        toasted (Optional[bool]): Whether to toast the bread
         grilled (Optional[bool]): Whether to grill the sandwich
         meat (Optional[EggSandwichMeat]): Meat selection
         cheese (Optional[EggSandwichCheese]): Cheese selection
@@ -209,7 +227,7 @@ class EggSandwichSchema(BaseModel):
     quantity: int = quantity_field
     bread: EggSandwichBread
     egg: Egg
-    toast: Optional[bool] = None
+    toasted: Optional[bool] = None
     grilled: Optional[bool] = None
     meat: Optional[EggSandwichMeat] = None
     cheese: Optional[EggSandwichCheese] = None
