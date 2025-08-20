@@ -200,9 +200,9 @@ class EggSandwich:
         self.grilled = grilled
         self.meat = meat
         self.cheese = cheese
-        self.toppings = toppings
+        self.toppings = list(set(toppings))
         self.special_instructions = special_instructions
-        self.add_ons = add_ons
+        self.add_ons = list(set(add_ons))
         self.quantity = quantity
         self._validate()
         self.price = self._calculate_price()
@@ -211,23 +211,36 @@ class EggSandwich:
         """
         Validate egg sandwich configuration.
         
-        Ensures that the sandwich has either egg or meat specified,
-        and validates that toppings and add-ons lists don't exceed
-        the available enum options.
+        Ensures that the sandwich has valid combinations of ingredients by checking:
+        - At least egg or meat must be specified
+        - Number of toppings cannot exceed available options
+        - Number of add-ons cannot exceed available options  
+        - Cannot add extra egg/cheese/meat as add-ons if base ingredient not selected
         
         Raises:
-            ValueError: If egg and meat are both missing, or if toppings
-                       or add-ons lists are invalid
+            ValueError: If validation fails for any of the following:
+                - Both egg and meat are missing
+                - Toppings list exceeds available enum options
+                - Add-ons list exceeds available enum options
+                - Extra egg selected without base egg
+                - Extra cheese selected without base cheese
+                - Extra meat selected without base meat
         """
-
-        if not self.egg and not self.meat:
+    
+        if self.egg == Egg.NO_EGG and not self.meat:
             raise ValueError("Egg or meat must be specified")
-        
-        if self.toppings and len(self.toppings) > len(EggSandwichToppings):
-            raise ValueError("Toppings must be a list of instances of EggSandwichToppings enum")
 
-        if self.add_ons and len(self.add_ons) > len(EggSandwichAddOns):
-            raise ValueError("Add-ons must be a list of instances of EggSandwichAddOns enum")
+        if self.egg == Egg.NO_EGG and EggSandwichAddOns.EGG in self.add_ons:
+            raise ValueError("Can not have egg in add-ons if no egg is specified")
+
+        
+        if not self.cheese and EggSandwichAddOns.CHEESE in self.add_ons:
+            raise ValueError("Can not have cheese in add-ons if no cheese is specified")
+        
+        if not self.meat and EggSandwichAddOns.MEAT in self.add_ons:
+            raise ValueError("Can not have meat in add-ons if no meat is specified")
+
+
 
     def _calculate_price(self) -> float:
         """
