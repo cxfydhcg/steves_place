@@ -5,8 +5,8 @@ FROM python:3.12-slim AS development
 WORKDIR /app
 
 # Copy requirements and install dependencies globally for development
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt test_requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt -r test_requirements.txt
 
 # Set environment variables for development
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -17,8 +17,9 @@ COPY . .
 # Expose port
 EXPOSE 5000
 
-# Run Flask development server with hot reload
-CMD ["python", "-u", "app.py"]
+
+# Run tests with coverage first, then start Flask development server
+CMD ["sh", "-c", "cd tests && python run_tests.py --coverage || true; cd .. && python -u app.py"]
 
 # Build stage - Install dependencies
 FROM python:3.12-slim AS build

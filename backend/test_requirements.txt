@@ -1,0 +1,24 @@
+# Testing framework
+pytest>=7.0.0
+pytest-cov>=4.0.0
+# pytest-mock>=3.10.0
+# pytest-flask>=1.2.0
+
+# Flask testing utilities
+Flask-Testing>=0.8.1
+
+# # Database testing
+# factory-boy>=3.2.1
+
+# # Mock and fixtures
+# responses>=0.23.0
+# freezegun>=1.2.0
+
+# # Code quality and coverage
+# coverage>=7.0.0
+# flake8>=6.0.0
+# black>=23.0.0
+
+# # Additional testing utilities
+# parameterized>=0.9.0
+# testfixtures>=7.1.0
