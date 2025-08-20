@@ -131,7 +131,7 @@ class Side:
     Attributes:
         quantity (int): Number of side items ordered
         name (SideName): Type of side item
-        size (Optional[SideSize]): Size of the side item
+        size (SideSize): Size of the side item
         chips_type (Optional[Chips]): Chip flavor (only for chip orders)
         special_instructions (Optional[str]): Special preparation notes
         price (float): Total price for all side items
@@ -140,7 +140,7 @@ class Side:
         >>> side = Side(
         ...     quantity=2,
         ...     name=SideName.CHIPS,
-        ...     size=None,
+        ...     size=SideSize.REGULAR,
         ...     chips_type=Chips.LAYS_BBQ,
         ...     special_instructions="Extra crispy"
         ... )
@@ -156,21 +156,20 @@ class Side:
         combinations like unsized salads or flavorless chips.
         
         Raises:
-            ValueError: If chips don't have a flavor specified, or if
-                       non-chip items don't have size specified
+            ValueError: If chips are ordered without a specified flavor
         """
-        if self.name == SideName.CHIPS and (self.chips_type is None or self.chips_type not in Chips):
+        if self.name == SideName.CHIPS and (self.chips_type is None):
             raise ValueError("Chips type must be specified for chips")
-        elif self.name != SideName.CHIPS and (self.size is None or self.size not in SideSize):
-            raise ValueError("Size must be specified for non-chips sides")
+
             
     def __init__(
         self,
         quantity: int,
         name: SideName,
-        size: Optional[SideSize],
+        size: SideSize,
         chips_type: Optional[Chips],
-        special_instructions: Optional[str]
+        special_instructions: Optional[str],
+
     ):
         """
         Initialize a side item order.
@@ -178,7 +177,7 @@ class Side:
         Args:
             quantity (int): Number of side items to order
             name (SideName): Type of side item
-            size (Optional[SideSize]): Size for non-chip items
+            size (SideSize): Size for non-chip items
             chips_type (Optional[Chips]): Chip flavor for chip orders
             special_instructions (Optional[str]): Special preparation notes
         
@@ -206,7 +205,7 @@ class Side:
         """
         if self.name == SideName.CHIPS:
             return SIDE_PRICES_MAP[self.name] * self.quantity
-        if self.size in SIDE_PRICES_MAP[self.name]:
+        else:
             return SIDE_PRICES_MAP[self.name][self.size] * self.quantity
 
     def __str__(self):

@@ -42,6 +42,7 @@ class Combo:
         side: Side,
         drink: Drink,
         special_instructions: Optional[str],
+
     ):
         self.side = side
         self.drink = drink
@@ -59,16 +60,17 @@ class Combo:
         - Premium sides (chicken salad, tuna salad) are excluded
         
         Raises:
-            ValueError: If side size is not regular or side is premium
-        """
-        if self.side.size != SideSize.REGULAR:
-            raise ValueError("Combo includes only regular size sides.")
+            ValueError: If special instructions are included for the side or drink
 
+
+        """
         if self.side.name == SideName.CHICKEN_SALAD \
             or self.side.name == SideName.TUNA_SALAD \
             or self.side.name == SideName.CHEESE_FRIES \
             or self.side.name == SideName.CHILLI_CHEESE_FRIES:
             raise ValueError("Combo does not include chicken salad, tuna salad, cheese fries, or chilli cheese fries.")
+
+
     def _calculate_price(self) -> float:
         """
         Calculate the total price for the combo meal.
@@ -83,7 +85,8 @@ class Combo:
         price = COMBO_BASE_PRICE
         if self.drink.size in [DrinkSize.LARGE, DrinkSize.BOTTLE]:
             price += DRINK_UPGRADE_COST
-        return round(price, 2)
+        return round(price * self.quantity, 2)
+
 
     def __str__(self):
         """

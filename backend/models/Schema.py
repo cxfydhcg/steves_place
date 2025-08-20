@@ -157,7 +157,7 @@ class ComboSideSchema(BaseModel):
     """
     quantity: Literal[1] = Field(default=1, description="Quantity should be at combo level")
     name: SideName
-    size: SideSize = SideSize.REGULAR
+    size: Literal[SideSize.REGULAR] = Field(default=SideSize.REGULAR, description="Size should be at combo level")
     chips_type: Optional[Chips] = None
     special_instructions: Literal[None] = Field(default=None, description="Description should be at combo level")
 
@@ -179,7 +179,6 @@ class ComboDrinkSchema(BaseModel):
 
     """
     quantity: Literal[1] = Field(default=1, description="Quantity should be at combo level")
-
     name: FountainDrink | BottleDrink
     size: DrinkSize
     special_instructions: Literal[None] = Field(default=None, description="Description should be at combo level")
@@ -231,6 +230,6 @@ class EggSandwichSchema(BaseModel):
     grilled: Optional[bool] = None
     meat: Optional[EggSandwichMeat] = None
     cheese: Optional[EggSandwichCheese] = None
-    toppings: Optional[List[EggSandwichToppings]] = None
+    toppings: Optional[List[EggSandwichToppings]] = []
     special_instructions: Optional[str] = special_instructions_field
-    add_ons: Optional[List[EggSandwichAddOns]] = None
+    add_ons: Optional[List[EggSandwichAddOns]] = []

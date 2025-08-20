@@ -47,6 +47,7 @@ export enum DrinkSize {
 export enum FountainDrink {
   COKE = "Coke",
   DIET_COKE = "Diet Coke",
+  SPRITE = "Sprite",
   MOUNTAIN_DEW_YELLOW = "Mountain Dew Yellow",
   HI_C = "Hi-C",
   ROOT_BEER = "Root Beer",

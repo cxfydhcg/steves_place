@@ -34,8 +34,9 @@ class FountainDrink(enum.Enum):
     regular and large sizes.
     
     Attributes:
-        COKE: Coca-Cola
-        DIET_COKE: Diet Coca-Cola
+        COKE: Coke
+        DIET_COKE: Diet Coke
+        SPRITE: Sprite
         MOUNTAIN_DEW_YELLOW: Mountain Dew
         HI_C: Hi-C fruit punch
         ROOT_BEER: Root beer
@@ -46,6 +47,7 @@ class FountainDrink(enum.Enum):
     """
     COKE = "Coke"
     DIET_COKE = "Diet Coke"
+    SPRITE = "Sprite"
     MOUNTAIN_DEW_YELLOW = "Mountain Dew Yellow"
     HI_C = "Hi-C"
     ROOT_BEER = "Root Beer"
@@ -104,6 +106,7 @@ class Drink:
         size: DrinkSize,
         name: FountainDrink | BottleDrink,
         special_instructions: Optional[str],
+
     ):
         self.quantity = quantity
         self.size = size
