@@ -1,5 +1,5 @@
 import pytest
-from models.Drink import Drink, DrinkSize, FountainDrink, BottleDrink, DRINK_PRICES_MAP
+from models.Drink import Drink, DrinkSize, FountainDrink, BottleDrink, DRINK_PRICE_MAP
 from models.Schema import DrinkSchema
 from pydantic import ValidationError
 
@@ -7,7 +7,7 @@ class TestDrinkValidCases:
     """Test cases for Drink model - valid cases with price testing."""
     def test_price_field(self):
         """Test price field in Drink model."""
-        assert DRINK_PRICES_MAP == {
+        assert DRINK_PRICE_MAP == {
             DrinkSize.REGULAR: 2.00,
             DrinkSize.LARGE: 2.50,
             DrinkSize.BOTTLE: 2.50
@@ -21,7 +21,7 @@ class TestDrinkValidCases:
         assert drink.quantity == quantity
         assert drink.size == DrinkSize.REGULAR
         assert drink.name == FountainDrink.COKE
-        assert drink.price == DRINK_PRICES_MAP[DrinkSize.REGULAR] * quantity
+        assert drink.price == DRINK_PRICE_MAP[DrinkSize.REGULAR] * quantity
         assert drink.special_instructions == None
 
         quantity = 2
@@ -30,7 +30,7 @@ class TestDrinkValidCases:
         assert drink.quantity == quantity
         assert drink.size == DrinkSize.REGULAR
         assert drink.name == FountainDrink.COKE
-        assert drink.price == DRINK_PRICES_MAP[DrinkSize.REGULAR] * quantity
+        assert drink.price == DRINK_PRICE_MAP[DrinkSize.REGULAR] * quantity
         assert drink.special_instructions == "Extra syrup"
 
     def test_drink_valid_case_large(self):
@@ -41,7 +41,7 @@ class TestDrinkValidCases:
         assert drink.quantity == quantity
         assert drink.size == DrinkSize.LARGE
         assert drink.name == FountainDrink.COKE
-        assert drink.price == DRINK_PRICES_MAP[DrinkSize.LARGE] * quantity
+        assert drink.price == DRINK_PRICE_MAP[DrinkSize.LARGE] * quantity
         assert drink.special_instructions == None
 
         quantity = 2
@@ -50,7 +50,7 @@ class TestDrinkValidCases:
         assert drink.quantity == quantity
         assert drink.size == DrinkSize.LARGE
         assert drink.name == FountainDrink.COKE
-        assert drink.price == DRINK_PRICES_MAP[DrinkSize.LARGE] * quantity
+        assert drink.price == DRINK_PRICE_MAP[DrinkSize.LARGE] * quantity
         assert drink.special_instructions == "Extra syrup"
 
     def test_drink_valid_case_bottle(self):
@@ -61,7 +61,7 @@ class TestDrinkValidCases:
         assert drink.quantity == quantity
         assert drink.size == DrinkSize.BOTTLE
         assert drink.name == BottleDrink.BOTTLED_SODA
-        assert drink.price == DRINK_PRICES_MAP[DrinkSize.BOTTLE] * quantity
+        assert drink.price == DRINK_PRICE_MAP[DrinkSize.BOTTLE] * quantity
         assert drink.special_instructions == None
 
         quantity = 2
@@ -70,7 +70,7 @@ class TestDrinkValidCases:
         assert drink.quantity == quantity
         assert drink.size == DrinkSize.BOTTLE
         assert drink.name == BottleDrink.BOTTLED_SODA
-        assert drink.price == DRINK_PRICES_MAP[DrinkSize.BOTTLE] * quantity
+        assert drink.price == DRINK_PRICE_MAP[DrinkSize.BOTTLE] * quantity
         assert drink.special_instructions == "Extra syrup"
 
 

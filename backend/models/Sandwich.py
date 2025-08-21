@@ -8,6 +8,7 @@ Sandwich class with complex pricing logic.
 from enum import Enum
 from typing import List, Optional
 
+
 class SandwichSize(Enum):
     """
     Enumeration of available sandwich sizes.
@@ -263,18 +264,18 @@ class Sandwich:
         add_ons: Optional[List[SandwichAddOns]],
     ):
 
-        self.size = size
-        self.bread = bread
-        self.toast = toast
-        self.grilled = grilled
-        self.meat = meat
-        self.cheese = cheese
-        self.toppings = list(set(toppings))
-        self.special_instructions = special_instructions
-        self.add_ons = list(set(add_ons))
-        self.quantity = quantity
+        self._size = size
+        self._bread = bread
+        self._toast = toast
+        self._grilled = grilled
+        self._meat = meat
+        self._cheese = cheese
+        self._toppings = list(set(toppings))
+        self._special_instructions = special_instructions
+        self._add_ons = list(set(add_ons))
+        self._quantity = quantity
         self._validate()
-        self.price = self._calculate_price()
+        self._price = self._calculate_price()
 
     def _validate(self):
         """
@@ -313,6 +314,42 @@ class Sandwich:
                 base_price += SANDWICH_ADD_ONS_PRICE_MAP[add_on][self.size]
 
         return round(base_price * self.quantity, 2)
+    # Read-only properties
+    @property
+    def quantity(self):
+        return self._quantity
+    @property
+    def size(self):
+        return self._size
+    @property
+    def bread(self):
+        return self._bread
+    @property
+    def meat(self):
+        return self._meat
+    @property
+    def toast(self):
+        return self._toast
+    @property
+    def grilled(self):
+        return self._grilled
+    @property
+    def cheese(self):
+        return self._cheese
+    @property
+    def toppings(self):
+        return self._toppings
+    @property
+    def special_instructions(self):
+        return self._special_instructions
+    @property
+    def add_ons(self):
+        return self._add_ons
+    @property
+    def price(self):
+        return self._price
+
+
 
     def __str__(self):
         """

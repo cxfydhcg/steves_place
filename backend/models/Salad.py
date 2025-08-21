@@ -164,14 +164,14 @@ class Salad:
         special_instructions: Optional[str],
         add_ons: Optional[List[SaladAddOns]],
     ):
-        self.choice = choice
-        self.toppings = list(set(toppings))
-        self.dressing = dressing
-        self.special_instructions = special_instructions
-        self.add_ons = list(set(add_ons))
-        self.quantity = quantity
+        self._choice = choice
+        self._toppings = list(set(toppings))
+        self._dressing = dressing
+        self._special_instructions = special_instructions
+        self._add_ons = list(set(add_ons))
+        self._quantity = quantity
         self._validate()
-        self.price = self._calculate_price()
+        self._price = self._calculate_price()
 
     def _validate(self):
         """
@@ -223,6 +223,36 @@ class Salad:
         for add_on in self.add_ons:
             price += SALAD_ADD_ONS_PRICE_MAP[add_on]
         return round(price * self.quantity, 2)
+    
+    @property
+    def quantity(self) -> int:
+        return self._quantity
+    
+    @property
+    def choice(self) -> SaladChoice:
+        return self._choice
+    
+    @property
+    def toppings(self) -> List[SaladTopping]:
+        return self._toppings
+    
+    @property
+    def dressing(self) -> Optional[SaladDressing]:
+        return self._dressing
+    
+    @property
+    def special_instructions(self) -> Optional[str]:
+        return self._special_instructions
+    
+    @property
+    def add_ons(self) -> Optional[List[SaladAddOns]]:
+        return self._add_ons
+    
+    @property
+    def price(self) -> float:
+        return self._price
+    
+
     def __str__(self):
         """
         Return a formatted string representation of the salad order.

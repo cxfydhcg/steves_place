@@ -51,9 +51,9 @@ class Order:
         Calculate the total price of all items in the order.
         
         Returns:
-            float: Sum of all item prices multiplied by quantities, rounded to 2 decimal places
+            float: Sum of all item prices, rounded to 2 decimal places
         """
-        return round(sum(item.price * item.quantity for item in self.items), 2)
+        return round(sum(item.price for item in self.items), 2)
 
     def total_price_with_fee(self) -> float:
         """

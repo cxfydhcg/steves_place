@@ -8,6 +8,7 @@ and the main EggSandwich class with pricing logic.
 from enum import Enum
 from typing import List, Optional
 
+
 class Egg(Enum):
     """
     Enumeration of egg preparation styles.
@@ -143,7 +144,6 @@ EGG_SANDWICH_ADD_ONS_PRICE_MAP = {
 
 CROISSANT_UPCHARGE = 0.75
 
-
 class EggSandwich:
     """
     Represents an egg sandwich order with customizable options and pricing.
@@ -194,18 +194,18 @@ class EggSandwich:
         special_instructions: Optional[str],
         add_ons: Optional[List[EggSandwichAddOns]],
     ):
-        self.egg = egg
-        self.bread = bread
-        self.toasted = toasted
-        self.grilled = grilled
-        self.meat = meat
-        self.cheese = cheese
-        self.toppings = list(set(toppings))
-        self.special_instructions = special_instructions
-        self.add_ons = list(set(add_ons))
-        self.quantity = quantity
+        self._egg = egg
+        self._bread = bread
+        self._toasted = toasted
+        self._grilled = grilled
+        self._meat = meat
+        self._cheese = cheese
+        self._toppings = list(set(toppings))
+        self._special_instructions = special_instructions
+        self._add_ons = list(set(add_ons))
+        self._quantity = quantity
         self._validate()
-        self.price = self._calculate_price()
+        self._price = self._calculate_price()
 
     def _validate(self):
         """
@@ -266,6 +266,39 @@ class EggSandwich:
             for add_on in self.add_ons:
                 price += EGG_SANDWICH_ADD_ONS_PRICE_MAP[add_on]
         return round(price * self.quantity, 2)
+    @property
+    def quantity(self):
+        return self._quantity
+    @property
+    def bread(self):
+        return self._bread
+    @property
+    def egg(self):
+        return self._egg
+    @property
+    def toasted(self):
+        return self._toasted
+    @property
+    def grilled(self):
+        return self._grilled
+    @property
+    def meat(self):
+        return self._meat
+    @property
+    def cheese(self):
+        return self._cheese
+    @property
+    def toppings(self):
+        return self._toppings
+    @property
+    def special_instructions(self):
+        return self._special_instructions
+    @property
+    def add_ons(self):
+        return self._add_ons
+    @property
+    def price(self):
+        return self._price
 
     def __str__(self):
         """

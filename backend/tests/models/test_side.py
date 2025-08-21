@@ -1,5 +1,5 @@
 import pytest
-from models.Side import Side, SideName, SideSize, Chips, SIDE_PRICES_MAP
+from models.Side import Side, SideName, SideSize, Chips, SIDE_PRICE_MAP
 from models.Schema import SideSchema
 from pydantic import ValidationError
 
@@ -7,7 +7,7 @@ class TestSideValidCases:
     """Test valid Side cases for Side model - with price testing."""
     def test_price_field(self):
         """Test price field in Side model."""
-        assert SIDE_PRICES_MAP == {
+        assert SIDE_PRICE_MAP == {
             SideName.CHIPS: 1.75,
             SideName.SLAW: {
                 SideSize.REGULAR: 3.00,
@@ -55,7 +55,7 @@ class TestSideValidCases:
         assert side.quantity == quantity
         assert side.name == SideName.CHIPS
         assert side.size == SideSize.REGULAR
-        assert side.price == SIDE_PRICES_MAP[SideName.CHIPS] * quantity
+        assert side.price == SIDE_PRICE_MAP[SideName.CHIPS] * quantity
         assert side.special_instructions == None
 
         side_schema = SideSchema(name=SideName.CHIPS, size=SideSize.LARGE, quantity=quantity, chips_type=Chips.LAYS_BBQ)
@@ -63,7 +63,7 @@ class TestSideValidCases:
         assert side.quantity == quantity
         assert side.name == SideName.CHIPS
         assert side.size == SideSize.LARGE
-        assert side.price == SIDE_PRICES_MAP[SideName.CHIPS] * quantity
+        assert side.price == SIDE_PRICE_MAP[SideName.CHIPS] * quantity
         assert side.special_instructions == None
 
     def test_side_valid_case_non_chips(self):
@@ -74,7 +74,7 @@ class TestSideValidCases:
         assert side.quantity == quantity
         assert side.name == SideName.FRENCH_FRIES
         assert side.size == SideSize.REGULAR
-        assert side.price == SIDE_PRICES_MAP[SideName.FRENCH_FRIES][SideSize.REGULAR] * quantity
+        assert side.price == SIDE_PRICE_MAP[SideName.FRENCH_FRIES][SideSize.REGULAR] * quantity
         assert side.special_instructions == None
 
         side_schema = SideSchema(name=SideName.FRENCH_FRIES, size=SideSize.LARGE, quantity=quantity)
@@ -82,7 +82,7 @@ class TestSideValidCases:
         assert side.quantity == quantity
         assert side.name == SideName.FRENCH_FRIES
         assert side.size == SideSize.LARGE
-        assert side.price == SIDE_PRICES_MAP[SideName.FRENCH_FRIES][SideSize.LARGE] * quantity
+        assert side.price == SIDE_PRICE_MAP[SideName.FRENCH_FRIES][SideSize.LARGE] * quantity
         assert side.special_instructions == None
 
     def test_side_valid_case_non_chips_with_special_instructions(self):
@@ -93,7 +93,7 @@ class TestSideValidCases:
         assert side.quantity == quantity
         assert side.name == SideName.FRENCH_FRIES
         assert side.size == SideSize.REGULAR
-        assert side.price == SIDE_PRICES_MAP[SideName.FRENCH_FRIES][SideSize.REGULAR] * quantity
+        assert side.price == SIDE_PRICE_MAP[SideName.FRENCH_FRIES][SideSize.REGULAR] * quantity
         assert side.special_instructions == "Add ketchup"
 
 class TestSideInvalidCases:

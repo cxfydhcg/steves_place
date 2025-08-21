@@ -39,6 +39,7 @@ class TestEggSandwichValidCases:
             add_ons=[EggSandwichAddOns.MEAT, EggSandwichAddOns.HASHBROWN]
         )
         egg_sandwich = EggSandwich(**egg_sandwich_schema.model_dump())
+        assert egg_sandwich.quantity == quantity
         # Price should be (base price + add on price) * quantity
         add_on_prices = [EGG_SANDWICH_ADD_ONS_PRICE_MAP[add_on] for add_on in egg_sandwich.add_ons]
         assert egg_sandwich.price == (self.EGG_SANDWICH_WITH_MEAT_PRICE + sum(add_on_prices)) * quantity

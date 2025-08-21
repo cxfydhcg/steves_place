@@ -8,6 +8,7 @@ pricing logic.
 import enum
 from typing import Optional
 
+
 class SideSize(enum.Enum):
     """
     Enumeration of available side item sizes.
@@ -78,7 +79,7 @@ class SideName(enum.Enum):
 
 
 # Price configuration
-SIDE_PRICES_MAP = {
+SIDE_PRICE_MAP = {
     SideName.CHIPS: 1.75,  # Same price for all chips
     SideName.SLAW: {
         SideSize.REGULAR: 3.00,
@@ -117,7 +118,6 @@ SIDE_PRICES_MAP = {
         SideSize.LARGE: 4.25
     }
 }
-
 
 class Side:
     """
@@ -184,13 +184,13 @@ class Side:
         Raises:
             ValueError: If configuration is invalid (e.g., chips without flavor)
         """
-        self.name = name
-        self.size = size
-        self.chips_type = chips_type
-        self.special_instructions = special_instructions
-        self.quantity = quantity
+        self._name = name
+        self._size = size
+        self._chips_type = chips_type
+        self._special_instructions = special_instructions
+        self._quantity = quantity
         self._validate()
-        self.price = self._calculate_price()
+        self._price = self._calculate_price()
 
     def _calculate_price(self) -> float:
         """
@@ -204,9 +204,33 @@ class Side:
             float: Total price for all side items in the order
         """
         if self.name == SideName.CHIPS:
-            return SIDE_PRICES_MAP[self.name] * self.quantity
+            return SIDE_PRICE_MAP[self.name] * self.quantity
         else:
-            return SIDE_PRICES_MAP[self.name][self.size] * self.quantity
+            return SIDE_PRICE_MAP[self.name][self.size] * self.quantity
+    # Read-only properties
+    @property
+    def quantity(self):
+        return self._quantity
+    
+    @property
+    def name(self):
+        return self._name
+    
+    @property
+    def size(self):
+        return self._size
+    
+    @property
+    def chips_type(self):
+        return self._chips_type
+    
+    @property
+    def special_instructions(self):
+        return self._special_instructions
+    
+    @property
+    def price(self):
+        return self._price
 
     def __str__(self):
         """

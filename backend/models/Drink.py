@@ -71,7 +71,7 @@ class BottleDrink(enum.Enum):
     BOTTLED_SODA = "Bottled Soda"
 
 
-DRINK_PRICES_MAP = {
+DRINK_PRICE_MAP = {
     DrinkSize.REGULAR: 2.00,
     DrinkSize.LARGE: 2.50,
     DrinkSize.BOTTLE: 2.50
@@ -108,12 +108,12 @@ class Drink:
         special_instructions: Optional[str],
 
     ):
-        self.quantity = quantity
-        self.size = size
-        self.name = name
-        self.special_instructions = special_instructions
+        self._quantity = quantity
+        self._size = size
+        self._name = name
+        self._special_instructions = special_instructions
         self._validate()
-        self.price = DRINK_PRICES_MAP[size] * quantity
+        self._price = DRINK_PRICE_MAP[size] * quantity
         
     def _validate(self):
         """
@@ -131,7 +131,28 @@ class Drink:
         
         if self.size in [DrinkSize.REGULAR, DrinkSize.LARGE] and not isinstance(self.name, FountainDrink):
             raise ValueError("Regular/Large drinks must use FountainDrink enum.")
-        
+    
+    # Read-only properties
+    @property
+    def quantity(self):
+        return self._quantity
+    
+    @property
+    def size(self):
+        return self._size
+    
+    @property
+    def name(self):
+        return self._name
+    
+    @property
+    def special_instructions(self):
+        return self._special_instructions
+    
+    @property
+    def price(self):
+        return self._price
+
     def __str__(self):
         """
         Return a formatted string representation of the drink order.

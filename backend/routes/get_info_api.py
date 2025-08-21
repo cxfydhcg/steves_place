@@ -13,8 +13,8 @@ from models.Hotdog import HOT_DOG_PRICE_MAP, HotDogTopping
 from models.Sandwich import SANDWICH_PRICE_MAP, SANDWICH_ADD_ONS_PRICE_MAP, SandwichSize, SandwichBread, SandwichCheese, SandwichToppings
 from models.EggSandwich import EGG_SANDWICH_ADD_ONS_PRICE_MAP, Egg, EggSandwichBread, EggSandwichCheese, EggSandwichToppings, EggSandwichMeat
 from models.Salad import SALAD_PRICE_MAP, SaladDressing, SaladTopping, SALAD_ADD_ONS_PRICE_MAP
-from models.Drink import DRINK_PRICES_MAP, FountainDrink, BottleDrink, DrinkSize
-from models.Side import SIDE_PRICES_MAP, SideName, Chips, SideSize
+from models.Drink import DRINK_PRICE_MAP, FountainDrink, BottleDrink, DrinkSize
+from models.Side import SIDE_PRICE_MAP, SideName, Chips, SideSize
 from models.Combo import COMBO_BASE_PRICE, DRINK_UPGRADE_COST
 from models.OrderTable import OrderTable
 from models.StoreCloseDateTable import StoreClosedDateTable
@@ -99,7 +99,7 @@ def get_menu():
     ]
     for salad_name, salad_price in SALAD_PRICE_MAP.items():
         menu["Salad"].append({"Name": salad_name.value, "Price": f"{salad_price:.2f}"})
-    for side_name, side_price in SIDE_PRICES_MAP.items():
+    for side_name, side_price in SIDE_PRICE_MAP.items():
         if side_name == SideName.CHIPS:
             menu["Side"].append({"Name": side_name.value, "Price": f"{side_price:.2f}"})
         else:
@@ -110,11 +110,11 @@ def get_menu():
 
     for drink_name in FountainDrink:
         menu["Drink"].append({"Name": drink_name.value, "Price": {
-            DrinkSize.REGULAR.value: f"{DRINK_PRICES_MAP[DrinkSize.REGULAR]:.2f}",
-            DrinkSize.LARGE.value: f"{DRINK_PRICES_MAP[DrinkSize.LARGE]:.2f}",
+            DrinkSize.REGULAR.value: f"{DRINK_PRICE_MAP[DrinkSize.REGULAR]:.2f}",
+            DrinkSize.LARGE.value: f"{DRINK_PRICE_MAP[DrinkSize.LARGE]:.2f}",
         }})
     for drink_name in BottleDrink:
-        menu["Drink"].append({"Name": drink_name.value, "Price": f"{DRINK_PRICES_MAP[DrinkSize.BOTTLE]:.2f}"})
+        menu["Drink"].append({"Name": drink_name.value, "Price": f"{DRINK_PRICE_MAP[DrinkSize.BOTTLE]:.2f}"})
     menu["Combo"] = [
         {"Name": "Combo", "Price": {
             "Regular": f"{COMBO_BASE_PRICE:.2f}",

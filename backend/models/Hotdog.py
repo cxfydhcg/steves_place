@@ -7,6 +7,7 @@ meat options, toppings, and the main Hotdog class with pricing logic.
 from enum import Enum
 from typing import List, Optional
 
+
 class HotDogMeat(Enum):
     """
     Enumeration of available hotdog meat options.
@@ -98,11 +99,31 @@ class Hotdog:
         toppings: Optional[List[HotDogTopping]],
         special_instructions: Optional[str],
     ):
-        self.dog_type = dog_type
-        self.toppings = list(set(toppings))
-        self.special_instructions = special_instructions
-        self.quantity = quantity
-        self.price = HOT_DOG_PRICE_MAP[dog_type] * quantity
+        self._dog_type = dog_type
+        self._toppings = list(set(toppings))
+        self._special_instructions = special_instructions
+        self._quantity = quantity
+        self._price = HOT_DOG_PRICE_MAP[dog_type] * quantity
+
+    @property
+    def quantity(self) -> int:
+        return self._quantity
+
+    @property
+    def dog_type(self) -> HotDogMeat:
+        return self._dog_type
+
+    @property
+    def toppings(self) -> List[HotDogTopping]:
+        return self._toppings
+
+    @property
+    def special_instructions(self) -> Optional[str]:
+        return self._special_instructions
+
+    @property
+    def price(self) -> float:
+        return self._price
 
 
     def __str__(self):

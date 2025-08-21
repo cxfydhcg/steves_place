@@ -8,7 +8,6 @@ specific restrictions on side sizes and types.
 from typing import Optional
 from .Side import Side, SideSize, SideName
 from .Drink import Drink, DrinkSize
-
 COMBO_BASE_PRICE = 4.25
 DRINK_UPGRADE_COST = 0.50
 
@@ -44,12 +43,13 @@ class Combo:
         special_instructions: Optional[str],
 
     ):
-        self.side = side
-        self.drink = drink
-        self.special_instructions = special_instructions
-        self.quantity = quantity
+        self._side = side
+        self._drink = drink
+        self._special_instructions = special_instructions
+        self._quantity = quantity
         self._validate()
-        self.price = self._calculate_price()
+        self._price = self._calculate_price()
+
 
     def _validate(self):
         """
@@ -86,7 +86,28 @@ class Combo:
         if self.drink.size in [DrinkSize.LARGE, DrinkSize.BOTTLE]:
             price += DRINK_UPGRADE_COST
         return round(price * self.quantity, 2)
+        
+    # Read-only properties
+    @property
+    def side(self):
+        return self._side
 
+    @property
+    def drink(self):
+        return self._drink
+
+    @property
+    def special_instructions(self):
+        return self._special_instructions
+
+    @property
+    def quantity(self):
+        return self._quantity
+
+    @property
+    def price(self):
+        return self._price
+    
 
     def __str__(self):
         """
