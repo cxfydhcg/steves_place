@@ -18,6 +18,13 @@ class TestSaladValidCases:
             SaladChoice.CHEF_TUNA: 9.50,
         }
 
+        assert SALAD_ADD_ONS_PRICE_MAP == {
+            SaladAddOns.CHEESE: 0.75,
+            SaladAddOns.EGGS: 1.00,
+            SaladAddOns.MEAT: 2.00,
+            SaladAddOns.DRESSING: 0.75,
+        }
+
     def test_salad_valid_case(self):
         """Test that the salad model is valid with valid data."""
         quantity = 2
