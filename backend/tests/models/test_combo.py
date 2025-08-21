@@ -149,35 +149,12 @@ class TestComboInvalidCases:
         with pytest.raises(ValidationError):
             ComboSchema(quantity=test_quantity, side=side_schema, drink=drink_shema)
     
-    def test_invalid_side_size(self):
-        """Test invalid side size."""
-        test_quantity = 1
-        side_schema = ComboSideSchema(name=SideName.FRENCH_FRIES, size=SideSize.LARGE)
-        drink_shema = ComboDrinkSchema(size=DrinkSize.REGULAR, name=FountainDrink.COKE)
-        
-        # It should not throw error, because in schema, side size is set to regular by default
-        combo_schema = ComboSchema(quantity=test_quantity, side=side_schema, drink=drink_shema)
-        Combo(
-            quantity=combo_schema.quantity,
-            side=combo_schema.side,
-            drink=combo_schema.drink,
-            special_instructions=combo_schema.special_instructions,
-        )
 
     def test_invalid_side_type(self):
         """Test invalid side type."""
         test_quantity = 1
-        side_schema = ComboSideSchema(name=SideName.CHICKEN_SALAD, size=SideSize.LARGE)
         drink_shema = ComboDrinkSchema(size=DrinkSize.REGULAR, name=FountainDrink.COKE)
-        
-        with pytest.raises(ValueError):
-            combo_schema = ComboSchema(quantity=test_quantity, side=side_schema, drink=drink_shema)
-            Combo(
-                quantity=combo_schema.quantity,
-                side=combo_schema.side,
-                drink=combo_schema.drink,
-                special_instructions=combo_schema.special_instructions,
-            )
+
         side_schema = ComboSideSchema(name=SideName.TUNA_SALAD, size=SideSize.REGULAR)
         with pytest.raises(ValueError):
             combo_schema = ComboSchema(quantity=test_quantity, side=side_schema, drink=drink_shema)

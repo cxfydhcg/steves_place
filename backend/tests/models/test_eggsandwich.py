@@ -1,5 +1,3 @@
-from curses import meta
-import pytest
 import pytest
 from models.Schema import EggSandwichSchema
 from models.EggSandwich import EggSandwich, EGG_SANDWICH_ADD_ONS_PRICE_MAP, EggSandwichAddOns, EggSandwichBread, EggSandwichMeat, EggSandwichCheese, EggSandwichToppings, Egg

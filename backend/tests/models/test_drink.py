@@ -1,7 +1,5 @@
 import pytest
 from models.Drink import Drink, DrinkSize, FountainDrink, BottleDrink, DRINK_PRICES_MAP
-import pytest
-from models.Drink import BottleDrink, Drink, DrinkSize, FountainDrink, DRINK_PRICES_MAP
 from models.Schema import DrinkSchema
 from pydantic import ValidationError
 
