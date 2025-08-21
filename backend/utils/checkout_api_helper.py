@@ -28,7 +28,6 @@ stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
 twilio_account_sid = os.getenv('TWILIO_ACCOUNT_SID')
 twilio_auth_token = os.getenv('TWILIO_AUTH_TOKEN')
 twilio_verify_service_sid = os.getenv('TWILIO_VERIFY_SERVICE_SID')
-twilio_phone_number = os.getenv('TWILIO_PHONE_NUMBER')
 
 twilio_client = Client(twilio_account_sid, twilio_auth_token)
 
@@ -218,31 +217,28 @@ def validate_and_create_food_item(item_type: str, item_data: Dict[str, Any]) -> 
         match item_type:
             case Category.HOTDOG.value:
                 hotdog = HotdogSchema(**item_data)
-                return Hotdog(**hotdog.dict())
+                return Hotdog(**hotdog.model_dump())
             case Category.SANDWICH.value:
                 sandwich = SandwichSchema(**item_data)
-                return Sandwich(**sandwich.dict())
+                return Sandwich(**sandwich.model_dump())
             case Category.EGGSANDWICH.value:
                 egg_sandwich = EggSandwichSchema(**item_data)
-                return EggSandwich(**egg_sandwich.dict())
+                return EggSandwich(**egg_sandwich.model_dump())
             case Category.SALAD.value:
                 salad = SaladSchema(**item_data)
-                return Salad(**salad.dict())
+                return Salad(**salad.model_dump())
             case Category.DRINK.value:
                 drink = DrinkSchema(**item_data)
-                return Drink(**drink.dict())
+                return Drink(**drink.model_dump())
             case Category.SIDE.value:
                 side = SideSchema(**item_data)
-                return Side(**side.dict())
+                return Side(**side.model_dump())
             case Category.COMBO.value:
                 combo = ComboSchema(**item_data)
-                # Convert side and drink schemas to model instances
-                side = ComboSideSchema(**combo.side.dict())
-                drink = ComboDrinkSchema(**combo.drink.dict())
                 return Combo(
                     quantity=combo.quantity,
-                    side=side,
-                    drink=drink,
+                    side=combo.side,
+                    drink=combo.drink,
                     special_instructions=combo.special_instructions,
                 )
             case _:
@@ -365,7 +361,7 @@ def to_serializable(obj):
     if isinstance(obj, enum.Enum):
         return obj.value
     elif isinstance(obj, BaseModel):
-        return {k: to_serializable(v) for k, v in obj.dict().items()}
+        return {k: to_serializable(v) for k, v in obj.model_dump().items()}
     elif isinstance(obj, dict):
         return {k: to_serializable(v) for k, v in obj.items()}
     elif isinstance(obj, list):
