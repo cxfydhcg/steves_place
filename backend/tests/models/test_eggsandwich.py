@@ -16,6 +16,13 @@ class TestEggSandwichValidCases:
             EggSandwichAddOns.EGG: 0.75,
             EggSandwichAddOns.CHEESE: 0.75,
         }
+        assert EGG_SANDWICH_ADD_ONS_PRICE_MAP == {
+            EggSandwichAddOns.MEAT: 1.50,
+            EggSandwichAddOns.HASHBROWN: 0.75,
+            EggSandwichAddOns.HASHBROWN_ONSIDE: 1.50,
+            EggSandwichAddOns.EGG: 0.75,
+            EggSandwichAddOns.CHEESE: 0.75,
+        }
     
     def test_eggsandwich_valid_case(self):
         """Test that the price field is calculated correctly."""
