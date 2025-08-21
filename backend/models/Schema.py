@@ -45,7 +45,7 @@ class HotdogSchema(BaseModel):
     """
     quantity: int = quantity_field
     dog_type: HotDogMeat
-    toppings: Optional[List[HotDogTopping]] = None
+    toppings: Optional[List[HotDogTopping]] = []
     special_instructions: Optional[str] = special_instructions_field
 
 class SaladSchema(BaseModel):

@@ -99,24 +99,10 @@ class Hotdog:
         special_instructions: Optional[str],
     ):
         self.dog_type = dog_type
-        self.toppings = toppings
+        self.toppings = list(set(toppings))
         self.special_instructions = special_instructions
         self.quantity = quantity
-        self._validate()
         self.price = HOT_DOG_PRICE_MAP[dog_type] * quantity
-
-    def _validate(self):
-        """
-        Validate hotdog configuration.
-        
-        Ensures that the number of toppings doesn't exceed the available
-        topping options and that all toppings are valid enum instances.
-        
-        Raises:
-            ValueError: If toppings configuration is invalid
-        """
-        if self.toppings and len(self.toppings) > len(HotDogTopping):
-            raise ValueError("Toppings must be a list of instances of HotDogTopping enum")
 
 
     def __str__(self):
