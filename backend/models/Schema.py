@@ -68,7 +68,8 @@ class SaladSchema(BaseModel):
     toppings: List[SaladTopping]
     dressing: Optional[SaladDressing] = None
     special_instructions: Optional[str] = special_instructions_field
-    add_ons: Optional[List[SaladAddOns]] = None
+    add_ons: Optional[List[SaladAddOns]] = []
+
 
 class SandwichSchema(BaseModel):
     """

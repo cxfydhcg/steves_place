@@ -31,7 +31,7 @@ class TestHotDogValidCases:
         )
         hotdog = Hotdog(**hotdog_schema.model_dump())
         assert hotdog.quantity == quantity
-        assert hotdog.price == HOT_DOG_PRICE_MAP[hotdog.dog_type] * quantity
+        assert hotdog.price == HOT_DOG_PRICE_MAP[HotDogMeat.RED] * quantity
 
     def test_duplicate_toppings(self):
         """Test that the hotdog model is valid with duplicate toppings."""
@@ -44,7 +44,7 @@ class TestHotDogValidCases:
         hotdog = Hotdog(**hotdog_schema.model_dump())
         assert hotdog.quantity == quantity
         assert len(hotdog.toppings) == 2
-        assert hotdog.price == HOT_DOG_PRICE_MAP[hotdog.dog_type] * quantity
+        assert hotdog.price == HOT_DOG_PRICE_MAP[HotDogMeat.RED] * quantity
 
 class TestHotDogInvalidCases:
     """Test cases for HotDog model - invalid cases."""

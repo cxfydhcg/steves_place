@@ -165,10 +165,10 @@ class Salad:
         add_ons: Optional[List[SaladAddOns]],
     ):
         self.choice = choice
-        self.toppings = toppings
+        self.toppings = list(set(toppings))
         self.dressing = dressing
         self.special_instructions = special_instructions
-        self.add_ons = add_ons
+        self.add_ons = list(set(add_ons))
         self.quantity = quantity
         self._validate()
         self.price = self._calculate_price()
@@ -182,21 +182,32 @@ class Salad:
         combinations, especially for Garden Salad restrictions.
         
         Raises:
-            ValueError: If toppings or add-ons exceed enum limits,
-                       or if meat items are added to Garden Salad
+            ValueError: if meat items are added to Garden Salad
         """
 
-        if self.toppings and len(self.toppings) > len(SaladTopping):
-            raise ValueError("Toppings must be a list of instances of SaladTopping enum")
-        if self.add_ons and len(self.add_ons) > len(SaladAddOns):
-            raise ValueError("Add-ons must be a list of instances of SaladAddOns enum")
-
-        if self.choice and self.choice == SaladChoice.GARDEN:
+        if self.choice == SaladChoice.GARDEN:
             if SaladTopping.BACON in self.toppings:
                 raise ValueError("Bacon is not allowed on Garden Salad")
             if SaladAddOns.MEAT in self.add_ons:
                 raise ValueError("Meat is not allowed on Garden Salad")
+            
+        if SaladAddOns.DRESSING in self.add_ons and not self.dressing:
+            raise ValueError("Dressing is required on Garden Salad")
         
+        if SaladAddOns.EGGS in self.add_ons and SaladTopping.EGGS not in self.toppings:
+            raise ValueError("Eggs are required in the toppings to add Eggs")
+
+        if SaladAddOns.CHEESE in self.add_ons and not any(
+            t in self.toppings for t in [
+                SaladTopping.AMERICAN_CHEESE,
+                SaladTopping.PROVOLONE_CHEESE,
+                SaladTopping.SWISS_CHEESE,
+            ]
+        ):
+            raise ValueError("Cheese is required in the toppings to add Cheese")
+
+
+
     def _calculate_price(self):
         """
         Calculate the total price for the salad order.
