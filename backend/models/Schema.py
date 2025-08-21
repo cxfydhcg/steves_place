@@ -96,14 +96,12 @@ class SandwichSchema(BaseModel):
     size: SandwichSize
     bread: SandwichBread
     meat: SandwichMeat
-    toast: Optional[bool] = None
-    grilled: Optional[bool] = None
+    toast: Optional[bool] = False
+    grilled: Optional[bool] = False
     cheese: Optional[SandwichCheese] = None
-    toppings: Optional[List[SandwichToppings]] = None
+    toppings: Optional[List[SandwichToppings]] = []
     special_instructions: Optional[str] = special_instructions_field
-    is_pick_two: Optional[bool] = None
-    pick_two_meats: Optional[List[SandwichMeat]] = None
-    add_ons: Optional[List[SandwichAddOns]] = None
+    add_ons: Optional[List[SandwichAddOns]] = []
 
 class SideSchema(BaseModel):
     """

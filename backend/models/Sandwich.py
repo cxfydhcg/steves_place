@@ -219,16 +219,14 @@ class Sandwich:
     
     The Sandwich class handles all aspects of sandwich customization including
     size selection, bread choice, meat, cheese, toppings, and premium add-ons.
-    It features complex pricing logic that varies by size and includes special
-    handling for "Pick Two" half-sandwich options.
     
     Attributes:
         quantity (int): Number of sandwiches ordered
         size (SandwichSize): Size of the sandwich (regular or large)
         bread (SandwichBread): Bread type
         meat (SandwichMeat): Meat selection
-        toast (Optional[bool]): Whether to toast the sandwich
-        grilled (Optional[bool]): Whether to grill the sandwich
+        toast (bool): Whether to toast the sandwich
+        grilled (bool): Whether to grill the sandwich
         cheese (Optional[SandwichCheese]): Cheese selection
         toppings (Optional[List[SandwichToppings]]): List of vegetable toppings and condiments
         special_instructions (Optional[str]): Special preparation notes
@@ -257,8 +255,8 @@ class Sandwich:
         size: SandwichSize,
         bread: SandwichBread,
         meat: SandwichMeat,
-        toast: Optional[bool],
-        grilled: Optional[bool],
+        toast: bool,
+        grilled: bool,
         cheese: Optional[SandwichCheese],
         toppings: Optional[List[SandwichToppings]],
         special_instructions: Optional[str],
@@ -271,11 +269,9 @@ class Sandwich:
         self.grilled = grilled
         self.meat = meat
         self.cheese = cheese
-        self.toppings = toppings
+        self.toppings = list(set(toppings))
         self.special_instructions = special_instructions
-        self.is_pick_two = is_pick_two
-        self.pick_two_meats = pick_two_meats
-        self.add_ons = add_ons
+        self.add_ons = list(set(add_ons))
         self.quantity = quantity
         self._validate()
         self.price = self._calculate_price()
@@ -283,24 +279,20 @@ class Sandwich:
     def _validate(self):
         """
         Validate sandwich configuration.
-        
+
         Validates that the sandwich configuration is valid, including
-        checking pick two meat selections and ensuring add-ons and toppings
-        don't exceed maximum limits.
-        
+        checking that cheese is specified when adding cheese add-on.
+
+
+
         Raises:
-            ValueError: If pick two requires exactly 2 meats, invalid meat selection,
-                       or if maximum toppings/add-ons are exceeded
+            ValueError: If no cheese is specified when adding cheese add-on.
         """
 
 
-        if self.meat not in SANDWICH_PRICE_MAP:
-                raise ValueError(f"Invalid meat: {self.meat}")
-        if self.toppings and len(self.toppings) > len(SandwichToppings):
-            raise ValueError("Maximum number of toppings exceeded.")
+        if SandwichAddOns.CHEESE in self.add_ons and self.cheese is None:
+            raise ValueError("Cheese is required when adding cheese add-on.")
 
-        if self.add_ons and len(self.add_ons) > len(SandwichAddOns):
-            raise ValueError("Maximum number of add-ons exceeded.")
 
     def _calculate_price(self) -> float:
         """
