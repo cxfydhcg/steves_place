@@ -27,8 +27,8 @@ class StoreClosedDateTable(db.Model):
     
     def __init__(self, date, is_recurring=False):
         # and duplicate date can not be created
-        if date in self.query.filter_by(date=date).all():
-            raise ValueError("Duplicate date can not be created")
+        if self.query.filter_by(date=date).first():
+            raise Exception("Duplicate date can not be created")
             
         self.date = date
         self.is_recurring = is_recurring
