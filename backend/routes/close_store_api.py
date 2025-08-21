@@ -10,8 +10,10 @@ from zoneinfo import ZoneInfo
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+log_dir = 'logs'
+os.makedirs(log_dir, exist_ok=True)
 logger = logging.getLogger(__name__)
-file_handler = logging.FileHandler('logs/close_store_api.log')
+file_handler = logging.FileHandler(os.path.join(log_dir, 'close_store_api.log'))
 file_handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 file_handler.setFormatter(formatter)

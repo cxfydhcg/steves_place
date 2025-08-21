@@ -3,11 +3,14 @@ import logging
 from flask import Blueprint, request, jsonify
 from models.OrderTable import OrderTable, db
 from utils.checkout_api_helper import generate_sms_code, validate_order, verify_sms_code, serialize_food_item, pay_with_card, cancel_payment_intent, confirm_payment_intent
+import os
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+log_dir = 'logs'
+os.makedirs(log_dir, exist_ok=True)
 logger = logging.getLogger(__name__)
-file_handler = logging.FileHandler('logs/checkout_api.log')
+file_handler = logging.FileHandler(os.path.join(log_dir, 'checkout_api.log'))
 file_handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 file_handler.setFormatter(formatter)
