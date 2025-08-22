@@ -52,6 +52,7 @@ def add_close_date():
         new_close_date = StoreClosedDateTable(date=date)
         db.session.add(new_close_date)
         db.session.commit()
+        logging.info(f"Close date added successfully from IP: {request.remote_addr}, date: {date}")
         return Response(json.dumps({'message': 'Close date added successfully'}), status=200, mimetype='application/json')
     except ValueError as e:
         logging.warning(f"ValueError: {e} from IP: {request.remote_addr}")

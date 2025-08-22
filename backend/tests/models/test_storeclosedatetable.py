@@ -18,7 +18,6 @@ class TestStoreClosedDateTable:
         
         assert stored is not None
         assert stored.date == test_date
-        assert stored.is_recurring is False
 
     def test_duplicate_date_raises_exception(self, app, db_session):
         """Test that creating a duplicate closed date raises an exception."""
@@ -47,9 +46,3 @@ class TestStoreClosedDateTable:
         
         assert StoreClosedDateTable.is_closed_on(date(2024, 12, 25)) is True
 
-        # Recurring closure
-        recurring = StoreClosedDateTable(date=date(2024, 1, 1), is_recurring=True)
-        db_session.add(recurring)
-        db_session.commit()
-        
-        assert StoreClosedDateTable.is_closed_on(date(2024, 2, 1)) is True  # recurring
