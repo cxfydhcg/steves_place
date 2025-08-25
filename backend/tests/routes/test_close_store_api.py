@@ -7,7 +7,7 @@ from models.StoreCloseDateTable import StoreClosedDateTable
 STORE_AUTH_SID = os.environ['STORE_AUTH_SID']
 
 class TestCloseStoreAPI:
-    """Tests for the /add_close_date endpoint."""
+    """Tests for the /api/close_store/add_close_date endpoint."""
 
     def test_add_valid_close_date(self, client, app, db_session):
         """Test adding a valid close date."""
@@ -16,7 +16,7 @@ class TestCloseStoreAPI:
             future_date = (datetime.now(timezone.utc) + timedelta(days=10)).astimezone(ZoneInfo("America/New_York"))
             future_str = future_date.strftime("%m/%d/%Y")
             response = client.post(
-                "/add_close_date",
+                "/api/close_store/add_close_date",
                 data={"store_auth_sid": STORE_AUTH_SID, "date": future_str}
             )
             assert response.status_code == 200
@@ -38,7 +38,7 @@ class TestCloseStoreAPI:
     def test_missing_store_auth_sid(self, client):
         """Test request with missing store_auth_sid."""
         future_date = (datetime.now() + timedelta(days=1)).strftime("%m/%d/%Y")
-        response = client.post("/add_close_date", data={"date": future_date})
+        response = client.post("/api/close_store/add_close_date", data={"date": future_date})
         assert response.status_code == 400
         data = json.loads(response.data)
         assert data["error"] == "Missing store_auth_sid"
@@ -47,7 +47,7 @@ class TestCloseStoreAPI:
         """Test request with wrong store_auth_sid."""
         future_date = (datetime.now() + timedelta(days=1)).strftime("%m/%d/%Y")
         response = client.post(
-            "/add_close_date",
+            "/api/close_store/add_close_date",
             data={"store_auth_sid": "WRONG_SID", "date": future_date}
         )
         assert response.status_code == 401
@@ -58,7 +58,7 @@ class TestCloseStoreAPI:
         """Test request with a past date."""
         past_date = (datetime.now() - timedelta(days=1)).strftime("%m/%d/%Y")
         response = client.post(
-            "/add_close_date",
+            "/api/close_store/add_close_date",
             data={"store_auth_sid": STORE_AUTH_SID, "date": past_date}
         )
         assert response.status_code == 400
@@ -68,7 +68,7 @@ class TestCloseStoreAPI:
     def test_invalid_date_format(self, client):
         """Test request with invalid date format."""
         response = client.post(
-            "/add_close_date",
+            "/api/close_store/add_close_date",
             data={"store_auth_sid": STORE_AUTH_SID, "date": "2025-01-01"}
         )
         assert response.status_code == 400
