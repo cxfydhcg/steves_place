@@ -31,7 +31,7 @@ formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 file_handler.setFormatter(formatter)
 logging.getLogger().addHandler(file_handler)
 
-routes = Blueprint('get_info_api', __name__, url_prefix='/api')
+routes = Blueprint('get_info_api', __name__, url_prefix='/api/get_info')
 
 
 

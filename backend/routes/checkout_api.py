@@ -16,10 +16,10 @@ formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
-routes = Blueprint('checkout_api', __name__)
+routes = Blueprint('checkout_api', __name__, url_prefix='/api/checkout')
 
     
-@routes.route('/api/checkout/send_sms_verification', methods=['POST'])
+@routes.route('/send_sms_verification', methods=['POST'])
 def send_sms_verification():
     # return jsonify({'success': True, 'message': 'Test: Verification code received successfully'}), 200
     """
@@ -73,7 +73,7 @@ def send_sms_verification():
         logger.error(f"SMS verification failed for {phone_number}: {str(e)}")
         return jsonify({'error': f'Failed to receive verification: {str(e)}'}), 500
 
-@routes.route('/api/checkout/verify_sms', methods=['POST'])
+@routes.route('/verify_sms', methods=['POST'])
 def verify_sms():
     """
     Verify SMS code and confirm cash order placement.
@@ -147,7 +147,7 @@ def verify_sms():
         return jsonify({'error': f'Server error: {str(e)}'}), 500
 
 
-@routes.route('/api/checkout/confirm_payment', methods=['POST'])
+@routes.route('/confirm_payment', methods=['POST'])
 def confirm_payment():
     """
     Confirm card payment and create order after successful payment processing.

@@ -185,9 +185,6 @@ def cancel_payment_intent(payment_intent_id: str) -> None:
     stripe.PaymentIntent.cancel(payment_intent_id)
 
 
-    if not phone.isdigit() or len(phone) != 10:
-        raise ValueError('Invalid phone number format')
-
 def validate_and_create_food_item(item_type: str, item_data: Dict[str, Any]) -> Union[Sandwich, Drink, Combo, Hotdog, Side, EggSandwich, Salad]:
     """
     Validate and create a food item from JSON data.
