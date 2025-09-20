@@ -280,7 +280,7 @@ def validate_order_items(items_data: List[Dict[str, Any]]) -> Order:
     return order
 
 @typechecked
-def validate_order(customer_name: str, phone_number: str, order_items_data: List[Dict[str, Any]], order_price: float, pickup_at: str, card_payment: bool = False) -> Tuple[Order, date]:
+def validate_order(customer_name: str, phone_number: str, order_items_data: List[Dict[str, Any]], order_price: float, pickup_at: str, card_payment: bool = False) -> Tuple[Order, datetime]:
     """
     Validate complete order data and return Order object.
     
@@ -297,36 +297,22 @@ def validate_order(customer_name: str, phone_number: str, order_items_data: List
         card_payment (bool, optional): Whether payment is by card. Defaults to False
     
     Returns:
-        Order: Validated Order object with all items
+        Tuple[Order, datetime]: Validated Order object with all items and pickup time
         
     Raises:
         ValueError: If customer name too long, phone number invalid, or price mismatch
         AssertionError: If calculated price doesn't match provided price
         
     Example:
-        >>> order = validate_order("John Doe", "1234567890", items, 25.99, True)
+        >>> order = validate_order("John Doe", "1234567890", items_data, 25.99, True)
     """
     if len(customer_name) > 100:
         raise ValueError('Customer name can not exceed 100 characters')
     if not phone_number.isdigit() or len(phone_number) != 10:
         raise ValueError('Phone number must be 10 digits')
 
-    # Pickup time is in iso format, which is in utc
-    pickup_time = datetime.fromisoformat(pickup_at)
-    # Convert to Eastern Time if the pickup_time is naive (no timezone)
-    if pickup_time.tzinfo is None:
-        # Assume input is UTC and convert to Eastern
-        pickup_time = pickup_time.replace(tzinfo=ZoneInfo('UTC'))
-    pickup_time_eastern = pickup_time.astimezone(ZoneInfo('US/Eastern'))
-    
-    # Time can not exceed store hour 7:30AM-5:30PM in eastern time
-    store_hour_start = pickup_time_eastern.replace(hour=7, minute=30, second=0, microsecond=0)
-    store_hour_end = pickup_time_eastern.replace(hour=17, minute=30, second=0, microsecond=0)
-    if pickup_time_eastern < store_hour_start or pickup_time_eastern > store_hour_end:
-        raise ValueError('Pickup time must be between 7:30AM and 5:30PM Eastern Time')
-    # Check if store is closed on pickup date
-    if StoreClosedDateTable.is_closed_on(pickup_time.date()):
-        raise ValueError('Store is closed on this date')
+    pickup_time = validate_pickup_time(pickup_at)
+
     order = validate_order_items(order_items_data)
     if card_payment:
         assert order_price == order.total_price_with_fee(), 'Order price does not match'
@@ -335,6 +321,43 @@ def validate_order(customer_name: str, phone_number: str, order_items_data: List
 
     return order, pickup_time
 
+def validate_pickup_time(pickup_time: str) -> datetime:
+    """
+    Validate and convert pickup time to Eastern Time.
+    
+    Converts a given datetime object to Eastern Time zone if it's in
+    UTC. Raises ValueError for invalid times or times outside store hours.
+    
+    Args:
+        pickup_time (datetime): Pickup time in UTC
+    
+    Returns:
+        datetime: Pickup time in Eastern Time
+        
+    Raises:
+        ValueError: If time is invalid or outside store hours
+    """
+    # Standardize UTC format
+    pickup_time = pickup_time.replace('Z', '+00:00')
+    print(pickup_time)
+    # Convert to datetime object and Eastern timezone
+    utc_time = datetime.fromisoformat(pickup_time)
+    eastern_time = utc_time.astimezone(ZoneInfo('US/Eastern'))
+    # Define store hours (6:30 AM - 5:30 PM ET)
+    opening_time = eastern_time.replace(hour=6, minute=30, second=0, microsecond=0)
+    closing_time = eastern_time.replace(hour=17, minute=30, second=0, microsecond=0)
+    
+    # Validate store hours
+    if not (opening_time <= eastern_time <= closing_time):
+        raise ValueError('Pickup time must be between 7:30AM and 5:30PM Eastern Time')
+        
+    # Validate store is open on pickup date
+    if StoreClosedDateTable.is_closed_on(eastern_time.date()):
+        raise ValueError('Store is closed on this date')
+    
+    # Return utc time
+    return utc_time
+    
 def to_serializable(obj):
     """
     Convert complex objects to JSON-serializable format.

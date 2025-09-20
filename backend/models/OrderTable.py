@@ -59,8 +59,8 @@ class OrderTable(db.Model):
     payment_intent_id = db.Column(db.String(100), nullable=True)
     
     # Timestamps
-    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
-    pickup_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at = db.Column(db.DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    pickup_at = db.Column(db.DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
     def __init__(self, customer_name, phone_number, order_items, total_amount, payment_method, payment_status, payment_intent_id=None, sms_verification_code=None, pickup_at=None):
         self.customer_name = customer_name
@@ -75,6 +75,8 @@ class OrderTable(db.Model):
         self.pickup_at = pickup_at
 
 
+    def __repr__(self):
+        return f"<Order {self.id} {self.customer_name} {self.phone_number} {self.order_items} {self.total_amount} {self.payment_method} {self.payment_status} {self.payment_intent_id} {self.sms_verification_code} {self.created_at} {self.pickup_at}>"
     
     
     def to_dict(self):

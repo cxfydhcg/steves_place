@@ -43,3 +43,14 @@ def db_session(app):
     """Create a database session for testing."""
     with app.app_context():
         yield db.session
+    
+
+@pytest.fixture
+def configure_logging():
+    """Configure logging for tests."""
+    logging.basicConfig(level=logging.INFO)
+    yield
+    logging.getLogger().handlers = []
+    logging.getLogger().setLevel(logging.NOTSET)
+    logging.getLogger('werkzeug').handlers = []
+    logging.getLogger('werkzeug').setLevel(logging.NOTSET)

@@ -94,10 +94,10 @@ class SandwichCheese(Enum):
     from mild to sharp flavors.
     
     Attributes:
-        AMERICAN: American cheese
-        PROVOLONE: Provolone cheese
-        SWISS: Swiss cheese
-        PEPPER_JACK: Pepper jack cheese
+        AMERICAN: American
+        PROVOLONE: Provolone
+        SWISS: Swiss
+        PEPPER_JACK: Pepper Jack
     """
     AMERICAN = "American"
     PROVOLONE = "Provolone"
@@ -113,25 +113,25 @@ class SandwichToppings(Enum):
     for sandwiches, from basic lettuce and tomato to specialty items.
     
     Attributes:
-        MAYO: Mayonnaise
-        TOMATO: Tomato slices
-        LETTUCE: Fresh lettuce
-        ONIONS: Onion slices
-        PICKLES: Pickle slices
-        SALT: Salt seasoning
-        PEPPER: Pepper seasoning
-        OREGANO: Oregano seasoning
-        THOUSAND_ISLAND: Thousand Island dressing
-        GRILLED_ONIONS: Grilled onions
-        GRILLED_PEPPERS: Grilled peppers
-        SPICY_MUSTARD: Spicy mustard
-        MUSTARD: Regular mustard
-        BANANA_PEPPERS: Banana pepper slices
-        JALAPENO_PEPPERS: Jalapeno pepper slices
-        OLIVES: Olive slices
-        OIL: Oil condiment
-        VINEGAR: Vinegar condiment
-        KRAUT: Sauerkraut
+        MAYO: Mayo
+        TOMATO: Tomato
+        LETTUCE: Lettuce
+        ONIONS: Onions
+        PICKLES: Pickles
+        SALT: Salt
+        PEPPER: Pepper
+        OREGANO: Oregano
+        THOUSAND_ISLAND: Thousand Island
+        GRILLED_ONIONS: Grilled Onions
+        GRILLED_PEPPERS: Grilled Peppers
+        SPICY_MUSTARD: Spicy Mustard
+        MUSTARD: Mustard
+        BANANA_PEPPERS: Banana Peppers
+        JALAPENO_PEPPERS: Jalapeno Peppers
+        OLIVES: Olives
+        OIL: Oil
+        VINEGAR: Vinegar
+        KRAUT: Kraut
     """
     MAYO = "Mayo"
     TOMATO = "Tomato"

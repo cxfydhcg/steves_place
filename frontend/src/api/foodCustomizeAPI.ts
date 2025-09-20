@@ -7,7 +7,7 @@ const API_BASE_URL =
 export const getCustomizeData = async (category: string) => {
   try {
     const response = await fetch(
-      `${API_BASE_URL}/get_${category.toLowerCase()}`
+      `${API_BASE_URL}/get_info/get_${category.toLowerCase()}`
     );
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

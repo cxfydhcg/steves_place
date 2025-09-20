@@ -56,7 +56,11 @@ def send_sms_verification():
         
         logger.info(f"SMS verification request - Customer: {customer_name}, Phone: {phone_number}, Order Price: ${order_price}")
         
-        validate_order(customer_name, phone_number, order_items, order_price, pickup_at, card_payment=False)
+        try:
+            order, pickup_time = validate_order(customer_name, phone_number, order_items, order_price, pickup_at, card_payment=False)
+        except ValueError as e:
+            logger.error(f"Order validation failed for {customer_name}: {str(e)}")
+            return jsonify({'error': f'Order validation failed: {str(e)}'}), 400
     
         # Generate verification code and temporary order ID
         if not generate_sms_code(phone_number):
@@ -111,10 +115,16 @@ def verify_sms():
         sms_code = request.form.get('sms_code')
         
         logger.info(f"SMS verification - Customer: {customer_name}, Phone: {phone_number}, Code: {sms_code}")
-        
-        order, pickup_time = validate_order(customer_name, phone_number, order_items, order_price, pickup_at, card_payment=False)
+        try:
+            order, pickup_time = validate_order(customer_name, phone_number, order_items, order_price, pickup_at, card_payment=False)
+        except ValueError as e:
+            logger.error(f"Order validation failed for {customer_name}: {str(e)}")
+            return jsonify({'error': f'Order validation failed: {str(e)}'}), 400
 
-        verify_sms_code(phone_number, sms_code)
+        if not verify_sms_code(phone_number, sms_code):
+            logger.error(f"Failed to verify SMS code for {phone_number}")
+            return jsonify({'error': 'Failed to verify SMS code'}), 400
+
         logger.info(f"SMS code verified successfully for {phone_number}")
         
         try:
@@ -190,8 +200,11 @@ def confirm_payment():
         payment_method_id = request.form.get('payment_method_id')
         
         logger.info(f"Card payment - Customer: {customer_name}, Phone: {phone_number}, Amount: ${order_price}")
-        
-        order, pickup_time = validate_order(customer_name, phone_number, order_items, order_price, pickup_at, card_payment=True)
+        try:
+            order, pickup_time = validate_order(customer_name, phone_number, order_items, order_price, pickup_at, card_payment=True)
+        except ValueError as e:
+            logger.error(f"Order validation failed for {customer_name}: {str(e)}")
+            return jsonify({'error': f'Order validation failed: {str(e)}'}), 400
 
         # Pay with card
         payment_response = pay_with_card(payment_method_id, order.total_price_with_fee())

@@ -16,7 +16,7 @@ const API_BASE_URL =
 
 export const getAllCategories = async (): Promise<Category[]> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/get_category`);
+    const response = await fetch(`${API_BASE_URL}/get_info/get_category`);
     if (!response.ok) {
       throw new Error("Failed to fetch categories");
     }
@@ -33,7 +33,7 @@ export const getAllCategories = async (): Promise<Category[]> => {
  */
 export const getMenuItems = async (): Promise<MenuItemResponse> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/get_menu`);
+    const response = await fetch(`${API_BASE_URL}/get_info/get_menu`);
     if (!response.ok) {
       throw new Error("Failed to fetch menu items");
     }
